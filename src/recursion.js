@@ -94,6 +94,23 @@ var sumBelow = function(n) {
 // 6. Get the integers within a range (x, y).
 // range(2,9); // [3,4,5,6,7,8]
 var range = function(x, y) {
+  // declare result array
+  // BASE CASE
+  // return result once x or y are within 1 integer proximity of eachother
+  var result = [];
+  if( (x - 1 === y || x + 1 === y) || x === y){
+    return result;
+  }
+
+  // RECURSIVE CASE
+  if (x < y) {
+    result.push(x + 1);
+    return result.concat(range(x + 1, y));
+  } else {
+    result.push(x - 1);
+    return result.concat(range(x - 1, y));
+  }
+
 };
 
 // 7. Compute the exponent of a number.
