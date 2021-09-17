@@ -126,6 +126,11 @@ var exponent = function(base, exp) {
 
   //recursive positive exp case --> reduce exponent
   if (exp > 0) {
+    // when exp is even, base^(exp/2) = y; thus, base^(exp) = y * y.
+    if (exp % 2 === 0) {
+      var evenExp = exponent(base, exp / 2);
+      return evenExp * evenExp;
+    }
     exp--;
     return base * exponent(base, exp);
   }
@@ -142,11 +147,31 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
-
+  // BASE CASE
+  if (n === 1) {
+    return true;
+  }
+  // RECURSIVE CASE
+  if (n < 1) {
+    return false;
+  }
+  return powerOfTwo(n / 2);
 };
 
 // 9. Write a function that reverses a string.
 var reverse = function(string) {
+  // BASE CASE
+  result = '';
+  if (string.length === 0) {
+    return result;
+  }
+  // RECURSIVE CASE
+  // add last string element to result
+  // remove last element from string and save to edit
+  // add to result, the invocation of the reverse function on edit
+  result += string.substring(string.length - 1);
+  var chop = string.slice(0, -1);
+  return result.concat(reverse(chop));
 };
 
 // 10. Write a function that determines if a string is a palindrome.
