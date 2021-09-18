@@ -176,6 +176,27 @@ var reverse = function(string) {
 
 // 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string) {
+  string = string.toLowerCase();
+  // BASE CASE
+  if ((string.length % 2 === 1 && string.length === 1) || string.length === 0) {
+    return true;
+  }
+
+  // RECURSIVE CASE
+  // collect first and last elements
+  var first = string[0];
+  var last = string[string.length - 1];
+  // check for equality in first and last elements
+    // if true - delete first and last
+      // return the recursive call to this function
+    // if false - return false
+  if (first === last) {
+    string = string.substring(1);
+    var chopped = string.slice(0, -1);
+    return palindrome(chopped);
+  } else {
+    return false;
+  }
 };
 
 // 11. Write a function that returns the remainder of x divided by y without using the
@@ -184,11 +205,25 @@ var palindrome = function(string) {
 // modulo(17,5) // 2
 // modulo(22,6) // 4
 var modulo = function(x, y) {
+  // var mod;
+  // if (x < 0) {
+  //   mod = x + y;
+  // } else {
+  //   mod = x - y;
+  // }
+  // if (x < y) {
+  //   return x;
+  // }
+  // if (y > mod) {
+  //   return mod;
+  // }
+  // return modulo(mod, y);
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
 var multiply = function(x, y) {
+
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
@@ -214,6 +249,13 @@ var compareStr = function(str1, str2) {
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
+  var array = [];
+  if (str.length === 0) {
+    return array;
+  }
+  array.push(str[0]);
+  str = str.slice(1);
+  return array.concat(createArray(str));
 };
 
 // 17. Reverse the order of an array
@@ -243,6 +285,16 @@ var countOccurrence = function(array, value) {
 // 21. Write a recursive version of map.
 // rMap([1,2,3], timesTwo); // [2,4,6]
 var rMap = function(array, callback) {
+  var result = [];
+  // BASE CASE
+  if (!Array.isArray(array)) {
+    return callback(array);
+  }
+
+  array.forEach(function(item) {
+    result.push(rMap(item, callback));
+  });
+  return result;
 };
 
 // 22. Write a function that counts the number of times a key occurs in an object.
@@ -250,6 +302,17 @@ var rMap = function(array, callback) {
 // countKeysInObj(obj, 'r') // 1
 // countKeysInObj(obj, 'e') // 2
 var countKeysInObj = function(obj, key) {
+  var keyCount = 0;
+  for (var item in obj) {
+    if (item === key) {
+      keyCount++;
+    }
+    var nestedObj = obj[item];
+    if (typeof nestedObj === 'object') {
+      keyCount += countKeysInObj(nestedObj, key);
+    }
+  }
+  return keyCount;
 };
 
 // 23. Write a function that counts the number of times a value occurs in an object.
@@ -257,11 +320,33 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(obj, 'r') // 2
 // countValuesInObj(obj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+  var keyCount = 0;
+  for (var item in obj) {
+    if (obj[item] === value && typeof obj[item] !== 'object') {
+      keyCount++;
+    }
+    var nestedObj = obj[item];
+    if (typeof nestedObj === 'object') {
+      keyCount += countValuesInObj(nestedObj, value);
+    }
+  }
+  return keyCount;
 };
 
 // 24. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, oldKey, newKey) {
+  for (var item in obj) {
+    if (item === oldKey) {
+      obj[newKey] = obj[item];
+      delete obj[oldKey];
+    }
+    var nestedObj = obj[item];
+    if (typeof nestedObj === 'object') {
+      replaceKeysInObj(nestedObj, oldKey, newKey);
+    }
+  }
+  return obj;
 };
 
 // 25. Get the first n Fibonacci numbers. In the Fibonacci sequence, each subsequent
